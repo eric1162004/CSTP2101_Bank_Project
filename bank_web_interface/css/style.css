@@ -1,0 +1,29 @@
+HTML {
+  background-color: #003F2D;
+  background-color: #54B848;
+}
+
+body{
+  background-color: whitesmoke;
+  width: 90%;
+  margin: 2% auto;
+  padding: 2%;
+  font-family: 'Open Sans', sans-serif;
+  border-radius: 1%;
+}
+
+label {
+  display: block;
+  margin: 5px 0;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+td,
+th {
+  padding: 5px;
+  border-bottom: 1px solid #aaa;
+}

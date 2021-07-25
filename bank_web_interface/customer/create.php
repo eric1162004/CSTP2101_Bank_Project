@@ -41,6 +41,7 @@ if (isset($_POST['submit'])){
 	
 		} catch(PDOException $error){
 			echo $sql . "<br>" . $error->getMessage();
+			
 		}
 	}
 }
@@ -51,7 +52,7 @@ if (isset($_POST['submit'])){
     renderHeader("../css/style.css");
 ?>
 
-<?php if (isset($_POST['submit']) && isValidInput($_POST) == true && isset($statement)) { ?>
+<?php if (isset($_POST['submit']) && $errorMsg == '' && isset($statement)) { ?>
   <?php echo escape($_POST['firstName']); ?> successfully added.
 <?php } ?>
 

@@ -80,7 +80,7 @@ if (isset($_POST['submit'])){
 	<?php echo "<div class='errorDiv'>" . $errorMsg . "</div>"?>
 <?php } ?>
 
-<h3>Add a account</h3>
+<h3>Add an account</h3>
 
 <form method="post">
         <label for="type">Account Type</label>

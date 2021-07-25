@@ -52,7 +52,7 @@ CREATE TABLE Owns (
 );
 
 CREATE TABLE Transactions (
-    transNumber INT,
+    transNumber INT NOT NULL AUTO_INCREMENT,
     accNumber INT,
     amount DOUBLE DEFAULT 0.00,
     PRIMARY KEY (transNumber, accNumber),

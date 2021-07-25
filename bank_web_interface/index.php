@@ -21,9 +21,42 @@ renderHeader("css/style.css");
 </ul>
 
 <h3>Manage Customer Accounts:</h3>
+
 <h3>Manage Transactions:</h3>
+
 <h3>Manage Employees:</h3>
+
+<ul>
+  <li>
+    <a href="employee/create.php"><strong>Create</strong></a> - add a employee
+  </li>
+  <li>
+    <a href="employee/read.php"><strong>Search</strong></a> - search employee by ID
+  </li>
+  <li>
+    <a href="employee/update.php"><strong>Update</strong></a> - update a employee
+  </li>
+  <li>
+    <a href="employee/delete.php"><strong>Delete</strong></a> - delete a employee by ID
+  </li>
+</ul>
+
 <h3>Manage Branch:</h3>
+
+<ul>
+  <li>
+    <a href="branch/create.php"><strong>Create</strong></a> - add a branch
+  </li>
+  <li>
+    <a href="branch/read.php"><strong>Search</strong></a> - search branch by ID
+  </li>
+  <li>
+    <a href="branch/update.php"><strong>Update</strong></a> - update a branch
+  </li>
+  <li>
+    <a href="branch/delete.php"><strong>Delete</strong></a> - delete a branch by ID
+  </li>
+</ul>
 
 
 <?php include "templates/footer.php"; ?>

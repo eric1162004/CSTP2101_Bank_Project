@@ -20,4 +20,10 @@ renderHeader("css/style.css");
   </li>
 </ul>
 
+<h3>Manage Customer Accounts:</h3>
+<h3>Manage Transactions:</h3>
+<h3>Manage Employees:</h3>
+<h3>Manage Branch:</h3>
+
+
 <?php include "templates/footer.php"; ?>

@@ -27,3 +27,45 @@ th {
   padding: 5px;
   border-bottom: 1px solid #aaa;
 }
+
+.errorDiv {
+  display: inline-block;
+  margin: 10px 0px;
+  padding:12px;
+  font-weight: bold;
+  border: 2px solid rgb(255, 255, 255);
+  border-radius: 1%;
+  color: #D8000C;
+  background-color: #FFD2D2;
+  font-size: small;
+  vertical-align:middle;
+}
+
+input[type="submit"]{
+	box-shadow:inset 0px 1px 0px 0px #9acc85;
+	background:linear-gradient(to bottom, #74ad5a 5%, #68a54b 100%);
+	background-color:#74ad5a;
+	border:1px solid #3b6e22;
+	display:block;
+  margin: 2% 0;
+  width: 160px;
+  height: 50px;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:13px;
+	font-weight:bold;
+	padding:6px 12px;
+	text-decoration:none;
+}
+
+a {
+  text-decoration: none;
+  background-color: #35B234;
+  color: white;
+  font-size: small;
+  display: inline-block;
+  border-radius: 2%;
+  padding: .5% 2%;
+  margin: 1% 0;
+}

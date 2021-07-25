@@ -2,18 +2,14 @@
 
 require "../../config.php";
 require "../../common.php";
+require "./validateCustomerInput.php";
 
-function renderInputType($key){
-    if($key == 'birthDate'){
-        echo 'date';
-    } else if ($key == 'income'){
-        echo "number";
-    } else {
-        echo 'text';
-    }
-}
-
+static $errorMsg;
+ 
 if (isset($_POST['submit'])) {
+  if (!hash_equals($_SESSION['csrf'], $_POST['csrf'])) die();
+
+  if(isValidInput($_POST)){
     try {
       $connection = new PDO($dsn, $username, $password, $options);
 
@@ -21,7 +17,7 @@ if (isset($_POST['submit'])) {
         "customerID"    =>  $_POST['customerID'],
         "firstName"     =>  $_POST['firstName'],
         "lastName"      =>  $_POST['lastName'],
-        "income"        =>  $_POST['income'],
+        "income"        =>  $_POST['income'] == 0 ? 0 : $_POST['income'],
         "birthDate"     =>  $_POST['birthDate']
       ];
 
@@ -39,6 +35,7 @@ if (isset($_POST['submit'])) {
     } catch(PDOException $error) {
       echo $sql . "<br>" . $error->getMessage();
     }
+  }
 }
 
 if (isset($_GET['id'])) {
@@ -60,6 +57,17 @@ if (isset($_GET['id'])) {
     echo "Something went wrong!";
     exit;
 }
+
+function renderInputType($key){
+  if($key == 'birthDate'){
+      echo 'date';
+  } else if ($key == 'income'){
+      echo "number";
+  } else {
+      echo 'text';
+  }
+}
+
 ?>
 
 <?php 
@@ -68,6 +76,14 @@ if (isset($_GET['id'])) {
 ?>
 
 <h3>Edit a customer</h3>
+
+<?php if (isset($_POST['submit']) && isValidInput($_POST) == true && isset($statement)) { ?>
+  <?php echo escape($_POST['firstName']); ?> successfully updated.
+<?php } ?>
+
+<?php if ($errorMsg != '') { ?>
+	<?php echo "<div class='errorDiv'>" . $errorMsg . "</div>"?>
+<?php } ?>
 
 <form method="post">
   <?php foreach ($customer as $key => $value) : ?>
@@ -87,6 +103,7 @@ if (isset($_GET['id'])) {
   <?php endforeach; ?>
 
   <input type="submit" name="submit" value="Submit">
+  <input name="csrf" type="hidden" value="<?php echo escape($_SESSION['csrf']); ?>">
 </form>
 
 <a href="../index.php">Back to home</a>

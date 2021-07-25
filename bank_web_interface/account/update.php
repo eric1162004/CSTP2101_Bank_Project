@@ -31,7 +31,7 @@ try {
     <tr>
         <th>Account Number</th>
         <th>Account Type</th>
-        <th>Balance($CAD)</th>
+        <!-- <th>Balance($CAD)</th> -->
         <th>Branch Number</th>
         <th>Update</th>
     </tr>
@@ -41,7 +41,7 @@ try {
     <tr>
       <td><?php echo escape($row["accNumber"]); ?></td>
       <td><?php echo escape($row["type"]); ?></td>
-      <td><?php echo escape($row["balance"]); ?></td>
+      <!-- <td><?php echo escape($row["balance"]); ?></td> -->
       <td><?php echo escape($row["branchNumber"]); ?></td>
       <td><a href="update-single.php?id=<?php echo escape($row["accNumber"]); ?>">Update</a></td>
   </tr>

@@ -23,6 +23,14 @@ if (isset($_POST['submit'])) {
 
         $ownResults = $statement->fetchAll();
 
+        // Get Account Balance from the Transaction table
+        $sql = "SELECT SUM(amount) FROM Transactions WHERE accNumber = :accNumber";
+        $statement = $connection->prepare($sql);
+        $statement->bindParam(":accNumber", $accNumber, PDO::PARAM_STR);
+        $statement->execute();
+
+        $accountBalance = ($statement->fetch())[0];
+
         // Get Customer Information
         $customers = array();
         foreach ($ownResults as $row){
@@ -74,7 +82,7 @@ if (isset($_POST['submit'])) {
     <tr>
     <td><?php echo escape($row["accNumber"]); ?></td>
     <td><?php echo escape($row["type"]); ?></td>
-    <td><?php echo escape($row["balance"]); ?></td>
+    <td><?php echo escape($accountBalance); ?></td>
     <td><?php echo escape($row["branchNumber"]); ?></td>
     </tr>
     <?php } ?>

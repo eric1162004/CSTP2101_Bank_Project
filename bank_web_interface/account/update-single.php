@@ -17,26 +17,26 @@ if (isset($_POST['submit'])) {
       [
       "accNumber"    =>  $_POST['accNumber'],
       "type"     =>  $_POST['type'],
-      "balance"        =>  $_POST['balance'] == 0 ? 0 : $_POST['balance']
+      // "balance"        =>  $_POST['balance'] == 0 ? 0 : $_POST['balance']
       ]:
       [
       "accNumber"    =>  $_POST['accNumber'],
       "type"     =>  $_POST['type'],
-      "branchNumber"      =>  $_POST['branchNumber'],
-      "balance"        =>  $_POST['balance'] == 0 ? 0 : $_POST['balance']
+      "branchNumber"      =>  $_POST['branchNumber']
+      // ,"balance"        =>  $_POST['balance'] == 0 ? 0 : $_POST['balance']
       ];
 
       $sql = $_POST['branchNumber'] == '' ?
       "UPDATE Account
       SET 
-      type = :type,
-      balance = :balance
+      type = :type
+      -- ,balance = :balance
       WHERE accNumber = :accNumber":
       "UPDATE Account
       SET 
       type = :type,
-      branchNumber = :branchNumber,
-      balance = :balance
+      branchNumber = :branchNumber
+      -- ,balance = :balance
       WHERE accNumber = :accNumber";
 
       $statement = $connection->prepare($sql);
@@ -140,6 +140,10 @@ function renderInputType($key){
 
 <form method="post">
   <?php foreach ($account as $key => $value) : ?>
+
+    <!-- Skip the balance field -->
+    <?php if ($key == "balance"): continue;?>
+    <?php endif; ?>
 
     <?php if ($key != "type"): ?>
 

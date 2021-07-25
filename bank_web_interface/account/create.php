@@ -16,13 +16,13 @@ if (isset($_POST['submit'])){
 	
 			$new_account = array(
 				"type" => $_POST['type'],
-				"balance" => $_POST['balance'],
+				//"balance" => $_POST['balance'],
 				"branchNumber" => $_POST['branchNumber']
 			);
 			
-			if ($_POST['balance'] == ''){
-				unset($new_account['balance']);
-			}
+			// if ($_POST['balance'] == ''){
+			// 	unset($new_account['balance']);
+			// }
 	
 			if ($_POST['branchNumber'] == ''){
 				unset($new_account['branchNumber']);
@@ -89,8 +89,8 @@ if (isset($_POST['submit'])){
             <option value="saving">saving</option>
             <option value="business">business</option>
         </select>
-    	<label for="balance">Balance</label>
-    	<input type="number" step="0.01" name="balance" id="balance">
+    	<!-- <label for="balance">Balance</label>
+    	<input type="number" step="0.01" name="balance" id="balance"> -->
         <label for="branchNumber">Branch Number</label>
     	<input type="number" name="branchNumber" id="branchNumber">
 		<label for="customerID1">Account Owner 1 (Enter Customer ID):</label>

@@ -69,3 +69,11 @@ a {
   padding: .5% 2%;
   margin: 1% 0;
 }
+
+.borderDiv {
+  display: inline-block;
+  border-radius: 2%;
+  border: 1px solid green;
+  margin: 1% 0;
+  padding: 1%;
+}

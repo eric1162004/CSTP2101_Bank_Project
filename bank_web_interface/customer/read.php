@@ -31,30 +31,29 @@ if (isset($_POST['submit'])) {
 <?php
 if (isset($_POST['submit'])) {
   if ($result && $statement->rowCount() > 0) { ?>
-    <h2>Results</h2>
-
-    <table>
+      <h3>Results</h3>
+      <table>
       <thead>
-<tr>
-  <th>#</th>
-  <th>First Name</th>
-  <th>Last Name</th>
-  <th>Income</th>
-  <th>Birth date</th>
-</tr>
+      <tr>
+      <th>#</th>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Income</th>
+      <th>Birth date</th>
+      </tr>
       </thead>
       <tbody>
-  <?php foreach ($result as $row) { ?>
+      <?php foreach ($result as $row) { ?>
       <tr>
-<td><?php echo escape($row["customerID"]); ?></td>
-<td><?php echo escape($row["firstName"]); ?></td>
-<td><?php echo escape($row["lastName"]); ?></td>
-<td><?php echo escape($row["income"]); ?></td>
-<td><?php echo escape($row["birthDate"]); ?></td>
+      <td><?php echo escape($row["customerID"]); ?></td>
+      <td><?php echo escape($row["firstName"]); ?></td>
+      <td><?php echo escape($row["lastName"]); ?></td>
+      <td><?php echo escape($row["income"]); ?></td>
+      <td><?php echo escape($row["birthDate"]); ?></td>
       </tr>
-    <?php } ?>
+      <?php } ?>
       </tbody>
-  </table>
+      </table>
   <?php } else { ?>
     > No results found for <?php echo escape($_POST['customerID']); ?>.
   <?php }

@@ -22,6 +22,21 @@ renderHeader("css/style.css");
 
 <h3>Manage Customer Accounts:</h3>
 
+<ul>
+  <li>
+    <a href="account/create.php"><strong>Create</strong></a> - add a account
+  </li>
+  <li>
+    <a href="account/read.php"><strong>Search</strong></a> - search account by account number
+  </li>
+  <li>
+    <a href="account/update.php"><strong>Update</strong></a> - update a account
+  </li>
+  <li>
+    <a href="account/delete.php"><strong>Delete</strong></a> - delete a account by account number
+  </li>
+</ul>
+
 <h3>Manage Transactions:</h3>
 
 <h3>Manage Employees:</h3>

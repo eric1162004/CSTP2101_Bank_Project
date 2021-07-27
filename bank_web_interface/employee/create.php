@@ -6,50 +6,50 @@ require "./validateEmployeeInput.php";
 
 static $errorMsg;
 
-if (isset($_POST['submit'])){
-	
-	if (!hash_equals($_SESSION['csrf'], $_POST['csrf'])) die();
+if (isset($_POST['submit'])) {
+    if (!hash_equals($_SESSION['csrf'], $_POST['csrf'])) {
+        die();
+    }
 
-	if(isValidInput($_POST)){
-		try{
-			$connection = new PDO($dsn, $username, $password, $options);
-	
-			$new_employee = array(
-				"sin" => $_POST['sin'],
-				"firstName" => $_POST['firstName'],
-				"lastName" => $_POST['lastName'],
-				"salary" => $_POST['salary'],
-				"branchNumber" => $_POST['branchNumber']
-			);
-			
-			if ($_POST['salary'] == ''){
-				unset($new_employee['salary']);
-			}
-	
-			if ($_POST['branchNumber'] == ''){
-				unset($new_employee['branchNumber']);
-			}
-		
-			$sql = sprintf(
-				"INSERT INTO %s (%s) values (%s)",
-				"Employee",
-				implode(", ", array_keys($new_employee)),
-				":" . implode(", :", array_keys($new_employee))
-			);
-	
-			$statement = $connection->prepare($sql);
-			$statement->execute($new_employee);
-	
-		} catch(PDOException $error){
-			// echo $sql . "<br>" . $error->getMessage();
+    if (isValidInput($_POST)) {
+        try {
+            $connection = new PDO($dsn, $username, $password, $options);
+    
+            $new_employee = array(
+                "sin" => $_POST['sin'],
+                "firstName" => $_POST['firstName'],
+                "lastName" => $_POST['lastName'],
+                "salary" => $_POST['salary'],
+                "branchNumber" => $_POST['branchNumber']
+            );
+            
+            if ($_POST['salary'] == '') {
+                unset($new_employee['salary']);
+            }
+    
+            if ($_POST['branchNumber'] == '') {
+                unset($new_employee['branchNumber']);
+            }
+        
+            $sql = sprintf(
+                "INSERT INTO %s (%s) values (%s)",
+                "Employee",
+                implode(", ", array_keys($new_employee)),
+                ":" . implode(", :", array_keys($new_employee))
+            );
+    
+            $statement = $connection->prepare($sql);
+            $statement->execute($new_employee);
+        } catch (PDOException $error) {
+            // echo $sql . "<br>" . $error->getMessage();
             displayError($error);
-		}
-	}
+        }
+    }
 }
 ?>
 
-<?php 
-    include "../templates/header.php"; 
+<?php
+    include "../templates/header.php";
     renderHeader("../css/style.css");
 ?>
 

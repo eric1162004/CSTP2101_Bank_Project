@@ -6,48 +6,48 @@ require "./validateBranchInput.php";
 
 static $errorMsg;
 
-if (isset($_POST['submit'])){
-	
-	if (!hash_equals($_SESSION['csrf'], $_POST['csrf'])) die();
+if (isset($_POST['submit'])) {
+    if (!hash_equals($_SESSION['csrf'], $_POST['csrf'])) {
+        die();
+    }
 
-	if(isValidInput($_POST)){
-		try{
-			$connection = new PDO($dsn, $username, $password, $options);
-	
-			$new_branch = array(
-				"branchName" => $_POST['branchName'],
-				"managerSIN" => $_POST['managerSIN'],
-				"budget" => $_POST['budget']
-			);
-			
-			if ($_POST['managerSIN'] == ''){
-				unset($new_branch['managerSIN']);
-			}
-	
-			if ($_POST['budget'] == ''){
-				unset($new_branch['budget']);
-			}
-		
-			$sql = sprintf(
-				"INSERT INTO %s (%s) values (%s)",
-				"Branch",
-				implode(", ", array_keys($new_branch)),
-				":" . implode(", :", array_keys($new_branch))
-			);
-	
-			$statement = $connection->prepare($sql);
-			$statement->execute($new_branch);
-	
-		} catch(PDOException $error){
-			// echo $sql . "<br>" . $error->getMessage();
+    if (isValidInput($_POST)) {
+        try {
+            $connection = new PDO($dsn, $username, $password, $options);
+    
+            $new_branch = array(
+                "branchName" => $_POST['branchName'],
+                "managerSIN" => $_POST['managerSIN'],
+                "budget" => $_POST['budget']
+            );
+            
+            if ($_POST['managerSIN'] == '') {
+                unset($new_branch['managerSIN']);
+            }
+    
+            if ($_POST['budget'] == '') {
+                unset($new_branch['budget']);
+            }
+        
+            $sql = sprintf(
+                "INSERT INTO %s (%s) values (%s)",
+                "Branch",
+                implode(", ", array_keys($new_branch)),
+                ":" . implode(", :", array_keys($new_branch))
+            );
+    
+            $statement = $connection->prepare($sql);
+            $statement->execute($new_branch);
+        } catch (PDOException $error) {
+            // echo $sql . "<br>" . $error->getMessage();
             isManagerSINValid($error);
-		}
-	}
+        }
+    }
 }
 ?>
 
-<?php 
-    include "../templates/header.php"; 
+<?php
+    include "../templates/header.php";
     renderHeader("../css/style.css");
 ?>
 

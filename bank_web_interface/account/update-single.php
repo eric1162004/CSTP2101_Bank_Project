@@ -7,13 +7,15 @@ require "./validateAccountInput.php";
 static $errorMsg;
  
 if (isset($_POST['submit'])) {
-  if (!hash_equals($_SESSION['csrf'], $_POST['csrf'])) die();
+    if (!hash_equals($_SESSION['csrf'], $_POST['csrf'])) {
+        die();
+    }
 
-  if(isValidInput($_POST)){
-    try {
-      $connection = new PDO($dsn, $username, $password, $options);
+    if (isValidInput($_POST)) {
+        try {
+            $connection = new PDO($dsn, $username, $password, $options);
 
-      $branch = $_POST['branchNumber'] == '' ?       
+            $branch = $_POST['branchNumber'] == '' ?
       [
       "accNumber"    =>  $_POST['accNumber'],
       "type"     =>  $_POST['type'],
@@ -26,7 +28,7 @@ if (isset($_POST['submit'])) {
       // ,"balance"        =>  $_POST['balance'] == 0 ? 0 : $_POST['balance']
       ];
 
-      $sql = $_POST['branchNumber'] == '' ?
+            $sql = $_POST['branchNumber'] == '' ?
       "UPDATE Account
       SET 
       type = :type
@@ -39,92 +41,91 @@ if (isset($_POST['submit'])) {
       -- ,balance = :balance
       WHERE accNumber = :accNumber";
 
-      $statement = $connection->prepare($sql);
-      $statement->execute($branch);
+            $statement = $connection->prepare($sql);
+            $statement->execute($branch);
 
-      // Delete all entries in Owns related to the accNumber
-      $sql = "DELETE FROM Owns WHERE accNumber = :accNumber";
-      $statement = $connection->prepare($sql);
-      $statement->bindParam(":accNumber", $_POST['accNumber'], PDO::PARAM_STR);
-      $statement->execute();
+            // Delete all entries in Owns related to the accNumber
+            $sql = "DELETE FROM Owns WHERE accNumber = :accNumber";
+            $statement = $connection->prepare($sql);
+            $statement->bindParam(":accNumber", $_POST['accNumber'], PDO::PARAM_STR);
+            $statement->execute();
 
-      // Add back the account owners
-      if($_POST["customerID1"] != ''){
-        $sql = sprintf(
-					"INSERT INTO Owns values (%s,%s)",
-					$_POST['customerID1'],
-					$_POST['accNumber']
-				);
-				$statement = $connection->prepare($sql);
-				$statement->execute();
-      }
+            // Add back the account owners
+            if ($_POST["customerID1"] != '') {
+                $sql = sprintf(
+                    "INSERT INTO Owns values (%s,%s)",
+                    $_POST['customerID1'],
+                    $_POST['accNumber']
+                );
+                $statement = $connection->prepare($sql);
+                $statement->execute();
+            }
       
-      if($_POST["customerID2"] != ''){
-        $sql = sprintf(
-					"INSERT INTO Owns values (%s,%s)",
-					$_POST['customerID2'],
-					$_POST['accNumber']
-				);
-				$statement = $connection->prepare($sql);
-				$statement->execute();
-      }
-
-    } catch(PDOException $error) {
-      echo $sql . "<br>" . $error->getMessage();
-      isbranchNumberValid($error);
+            if ($_POST["customerID2"] != '') {
+                $sql = sprintf(
+                    "INSERT INTO Owns values (%s,%s)",
+                    $_POST['customerID2'],
+                    $_POST['accNumber']
+                );
+                $statement = $connection->prepare($sql);
+                $statement->execute();
+            }
+        } catch (PDOException $error) {
+            echo $sql . "<br>" . $error->getMessage();
+            isbranchNumberValid($error);
+        }
     }
-  }
 }
 
 if (isset($_GET['id'])) {
-  try {
-    $connection = new PDO($dsn, $username, $password, $options);
-    $id = $_GET['id'];
+    try {
+        $connection = new PDO($dsn, $username, $password, $options);
+        $id = $_GET['id'];
 
-    $sql = "SELECT * FROM Account WHERE accNumber = :id";
-    $statement = $connection->prepare($sql);
-    $statement->bindValue(':id', $id);
-    $statement->execute();
+        $sql = "SELECT * FROM Account WHERE accNumber = :id";
+        $statement = $connection->prepare($sql);
+        $statement->bindValue(':id', $id);
+        $statement->execute();
 
-    $account = $statement->fetch(PDO::FETCH_ASSOC);
+        $account = $statement->fetch(PDO::FETCH_ASSOC);
 
-    // Get Customer ID from Owns Table
-    $sql = "SELECT * FROM Owns WHERE accNumber = :id";
-    $statement = $connection->prepare($sql);
-    $statement->bindValue(':id', $id);
-    $statement->execute();
+        // Get Customer ID from Owns Table
+        $sql = "SELECT * FROM Owns WHERE accNumber = :id";
+        $statement = $connection->prepare($sql);
+        $statement->bindValue(':id', $id);
+        $statement->execute();
 
-    $accountOwners = $statement->fetchAll(PDO::FETCH_ASSOC);
-    if($accountOwners){
-      if(isset($accountOwners[0])){
-        $customerID1 = $accountOwners[0]["customerID"];
-      }
-      if(isset($accountOwners[1])){
-        $customerID2 = $accountOwners[1]["customerID"];
-      }
+        $accountOwners = $statement->fetchAll(PDO::FETCH_ASSOC);
+        if ($accountOwners) {
+            if (isset($accountOwners[0])) {
+                $customerID1 = $accountOwners[0]["customerID"];
+            }
+            if (isset($accountOwners[1])) {
+                $customerID2 = $accountOwners[1]["customerID"];
+            }
+        }
+    } catch (PDOException $error) {
+        echo $sql . "<br>" . $error->getMessage();
+        displayError($error);
     }
-
-  } catch(PDOException $error) {
-      echo $sql . "<br>" . $error->getMessage();
-      displayError($error);
-  }
 } else {
     echo "Something went wrong!";
     exit;
 }
 
-function renderInputType($key){
-    if ($key == 'accNumber' || $key == 'balance' || $key == 'branchNumber'){
-      echo "number";
-  } else {
-      echo 'text';
-  }
+function renderInputType($key)
+{
+    if ($key == 'accNumber' || $key == 'balance' || $key == 'branchNumber') {
+        echo "number";
+    } else {
+        echo 'text';
+    }
 }
 
 ?>
 
-<?php 
-    include "../templates/header.php"; 
+<?php
+    include "../templates/header.php";
     renderHeader("../css/style.css");
 ?>
 
@@ -153,11 +154,13 @@ function renderInputType($key){
 
     <input
     type="<?php renderInputType($key) ?>"
-    step="<?php if($key == 'balance') echo '0.01' ?>"
+    step="<?php if ($key == 'balance') {
+    echo '0.01';
+} ?>"
     name="<?php echo $key; ?>"
     id="<?php echo $key; ?>"
     value="<?php echo escape($value); ?>">
-    <?php echo ($key === 'accNumber' ? '(read-only)' : null); ?>
+    <?php echo($key === 'accNumber' ? '(read-only)' : null); ?>
 
     <?php else: ?>
 

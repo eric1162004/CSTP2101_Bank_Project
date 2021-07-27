@@ -7,13 +7,15 @@ require "./validateCustomerInput.php";
 static $errorMsg;
  
 if (isset($_POST['submit'])) {
-  if (!hash_equals($_SESSION['csrf'], $_POST['csrf'])) die();
+    if (!hash_equals($_SESSION['csrf'], $_POST['csrf'])) {
+        die();
+    }
 
-  if(isValidInput($_POST)){
-    try {
-      $connection = new PDO($dsn, $username, $password, $options);
+    if (isValidInput($_POST)) {
+        try {
+            $connection = new PDO($dsn, $username, $password, $options);
 
-      $customer =[
+            $customer =[
         "customerID"    =>  $_POST['customerID'],
         "firstName"     =>  $_POST['firstName'],
         "lastName"      =>  $_POST['lastName'],
@@ -21,7 +23,7 @@ if (isset($_POST['submit'])) {
         "birthDate"     =>  $_POST['birthDate']
       ];
 
-      $sql = "UPDATE Customer
+            $sql = "UPDATE Customer
       SET 
         firstName = :firstName,
         lastName = :lastName,
@@ -29,49 +31,48 @@ if (isset($_POST['submit'])) {
         birthDate = :birthDate
       WHERE customerID = :customerID";
 
-    $statement = $connection->prepare($sql);
-    $statement->execute($customer);
-
-    } catch(PDOException $error) {
-      echo $sql . "<br>" . $error->getMessage();
+            $statement = $connection->prepare($sql);
+            $statement->execute($customer);
+        } catch (PDOException $error) {
+            echo $sql . "<br>" . $error->getMessage();
+        }
     }
-  }
 }
 
 if (isset($_GET['id'])) {
-  try {
-    $connection = new PDO($dsn, $username, $password, $options);
-    $id = $_GET['id'];
+    try {
+        $connection = new PDO($dsn, $username, $password, $options);
+        $id = $_GET['id'];
 
-    $sql = "SELECT * FROM Customer WHERE customerID = :id";
-    $statement = $connection->prepare($sql);
-    $statement->bindValue(':id', $id);
-    $statement->execute();
+        $sql = "SELECT * FROM Customer WHERE customerID = :id";
+        $statement = $connection->prepare($sql);
+        $statement->bindValue(':id', $id);
+        $statement->execute();
 
-    $customer = $statement->fetch(PDO::FETCH_ASSOC);
-
-  } catch(PDOException $error) {
-      echo $sql . "<br>" . $error->getMessage();
-  }
+        $customer = $statement->fetch(PDO::FETCH_ASSOC);
+    } catch (PDOException $error) {
+        echo $sql . "<br>" . $error->getMessage();
+    }
 } else {
     echo "Something went wrong!";
     exit;
 }
 
-function renderInputType($key){
-  if($key == 'birthDate'){
-      echo 'date';
-  } else if ($key == 'income'){
-      echo "number";
-  } else {
-      echo 'text';
-  }
+function renderInputType($key)
+{
+    if ($key == 'birthDate') {
+        echo 'date';
+    } elseif ($key == 'income') {
+        echo "number";
+    } else {
+        echo 'text';
+    }
 }
 
 ?>
 
-<?php 
-    include "../templates/header.php"; 
+<?php
+    include "../templates/header.php";
     renderHeader("../css/style.css");
 ?>
 
@@ -94,11 +95,13 @@ function renderInputType($key){
 
     <input
     type="<?php renderInputType($key) ?>"
-    step="<?php if($key == 'income') echo '0.01' ?>"
+    step="<?php if ($key == 'income') {
+    echo '0.01';
+} ?>"
     name="<?php echo $key; ?>"
     id="<?php echo $key; ?>"
     value="<?php echo escape($value); ?>">
-    <?php echo ($key === 'customerID' ? '(read-only)' : null); ?>
+    <?php echo($key === 'customerID' ? '(read-only)' : null); ?>
 
   <?php endforeach; ?>
 

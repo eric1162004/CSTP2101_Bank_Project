@@ -4,46 +4,47 @@ require "../../config.php";
 require "../../common.php";
 
 if (isset($_GET["id"])) {
-  try {
-    $connection = new PDO($dsn, $username, $password, $options);
+    try {
+        $connection = new PDO($dsn, $username, $password, $options);
 
-    $id = $_GET["id"];
+        $id = $_GET["id"];
 
-    $sql = "DELETE FROM Customer WHERE customerID = :id";
+        $sql = "DELETE FROM Customer WHERE customerID = :id";
 
-    $statement = $connection->prepare($sql);
-    $statement->bindValue(':id', $id);
-    $statement->execute();
+        $statement = $connection->prepare($sql);
+        $statement->bindValue(':id', $id);
+        $statement->execute();
 
-    $success = "Customer (id: $id) successfully deleted";
-
-  } catch(PDOException $error) {
-    echo $sql . "<br>" . $error->getMessage();
-  }
+        $success = "Customer (id: $id) successfully deleted";
+    } catch (PDOException $error) {
+        echo $sql . "<br>" . $error->getMessage();
+    }
 }
 
 try {
-  $connection = new PDO($dsn, $username, $password, $options);
+    $connection = new PDO($dsn, $username, $password, $options);
 
-  $sql = "SELECT * FROM Customer";
+    $sql = "SELECT * FROM Customer";
 
-  $statement = $connection->prepare($sql);
-  $statement->execute();
+    $statement = $connection->prepare($sql);
+    $statement->execute();
 
-  $result = $statement->fetchAll();
-} catch(PDOException $error) {
-  echo $sql . "<br>" . $error->getMessage();
+    $result = $statement->fetchAll();
+} catch (PDOException $error) {
+    echo $sql . "<br>" . $error->getMessage();
 }
 ?>
 
-<?php 
-    include "../templates/header.php"; 
+<?php
+    include "../templates/header.php";
     renderHeader("../css/style.css");
 ?>
 
 <h3>Delete Customer</h3>
 
-<?php if (isset($success)) echo $success; ?>
+<?php if (isset($success)) {
+    echo $success;
+} ?>
 
 <table>
   <thead>

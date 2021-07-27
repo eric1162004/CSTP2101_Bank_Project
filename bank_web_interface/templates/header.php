@@ -1,7 +1,8 @@
 <?php
 
-function renderHeader($css_path){
-  echo "
+function renderHeader($css_path)
+{
+    echo "
     <!DOCTYPE html>
     <html lang='en'>
       <head>
@@ -21,5 +22,3 @@ function renderHeader($css_path){
     </html>
   ";
 }
-
-?>

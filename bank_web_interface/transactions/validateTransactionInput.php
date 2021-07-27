@@ -1,17 +1,18 @@
 <?php
 
-function isValidInput($inputs){
+function isValidInput($inputs)
+{
     global $dsn;
     global $username;
     global $password;
     global $options;
-	global $errorMsg;
-	$errorMsg = '';
+    global $errorMsg;
+    $errorMsg = '';
 
-	if($inputs['accNumber'] == ""){
-		$errorMsg .= "An Account Number is required </br> ";
-	} else {
-        try{
+    if ($inputs['accNumber'] == "") {
+        $errorMsg .= "An Account Number is required </br> ";
+    } else {
+        try {
             $connection = new PDO($dsn, $username, $password, $options);
         
             $sql = "SELECT * FROM Account WHERE accNumber=:accNumber";
@@ -21,25 +22,23 @@ function isValidInput($inputs){
             $statement->execute();
             $result = $statement->fetch(PDO::FETCH_ASSOC);
 
-            if(!$result){
+            if (!$result) {
                 $errorMsg .= "Invalid account number</br>";
             }
-    
-        } catch(PDOException $error){
+        } catch (PDOException $error) {
             echo $sql . "<br>" . $error->getMessage();
         }
     }
 
-	return $errorMsg == '' ? true : false;
+    return $errorMsg == '' ? true : false;
 }
 
-function isaccNumberValid($error){
-	global $errorMsg;
-	$errorMsg = '';
+function isaccNumberValid($error)
+{
+    global $errorMsg;
+    $errorMsg = '';
 
-    if($error->getCode() == "23000"){
+    if ($error->getCode() == "23000") {
         $errorMsg .= "Invald account number </br>";
-    } 
+    }
 }
-
-?>

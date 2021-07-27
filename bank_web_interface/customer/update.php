@@ -1,26 +1,25 @@
 <?php
 
 try {
-  require "../../config.php";
-  require "../../common.php";
+    require "../../config.php";
+    require "../../common.php";
 
-  $connection = new PDO($dsn, $username, $password, $options);
+    $connection = new PDO($dsn, $username, $password, $options);
 
-  $sql = "SELECT * FROM Customer";
+    $sql = "SELECT * FROM Customer";
 
-  $statement = $connection->prepare($sql);
-  $statement->execute();
+    $statement = $connection->prepare($sql);
+    $statement->execute();
 
-  $result = $statement->fetchAll();
-
-} catch(PDOException $error) {
-  echo $sql . "<br>" . $error->getMessage();
+    $result = $statement->fetchAll();
+} catch (PDOException $error) {
+    echo $sql . "<br>" . $error->getMessage();
 }
 
 ?>
 
-<?php 
-    include "../templates/header.php"; 
+<?php
+    include "../templates/header.php";
     renderHeader("../css/style.css");
 ?>
 

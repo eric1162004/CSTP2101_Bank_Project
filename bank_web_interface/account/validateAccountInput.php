@@ -1,31 +1,32 @@
 <?php
 
-function isValidInput($inputs){
+function isValidInput($inputs)
+{
     global $dsn;
     global $username;
     global $password;
     global $options;
-	global $errorMsg;
-	$errorMsg = '';
+    global $errorMsg;
+    $errorMsg = '';
 
-	if($inputs['customerID1'] == "" && $inputs['customerID2'] == "" ){
-		$errorMsg .= "At least 1 account owner is required </br> ";
-	} else {
-        if($inputs['customerID1'] != ""){
+    if ($inputs['customerID1'] == "" && $inputs['customerID2'] == "") {
+        $errorMsg .= "At least 1 account owner is required </br> ";
+    } else {
+        if ($inputs['customerID1'] != "") {
             validCustomer($inputs['customerID1']);
         }
-        if($inputs['customerID2'] != ""){
+        if ($inputs['customerID2'] != "") {
             validCustomer($inputs['customerID2']);
         }
     }
 
     // Check if user has enter the same customer id twice
-    if($inputs['customerID1'] == $inputs['customerID2']){
-		$errorMsg .= "Duplicated account owner IDs </br> ";
+    if ($inputs['customerID1'] == $inputs['customerID2']) {
+        $errorMsg .= "Duplicated account owner IDs </br> ";
     }
 
-    if($inputs['branchNumber'] != ""){
-        try{
+    if ($inputs['branchNumber'] != "") {
+        try {
             $connection = new PDO($dsn, $username, $password, $options);
         
             $sql = "SELECT * FROM Branch WHERE branchNumber=:branchNumber";
@@ -35,26 +36,26 @@ function isValidInput($inputs){
             $statement->execute();
             $result = $statement->fetch(PDO::FETCH_ASSOC);
 
-            if(!$result){
+            if (!$result) {
                 $errorMsg .= "Branch Number does not exist</br>";
             }
-    
-        } catch(PDOException $error){
+        } catch (PDOException $error) {
             echo $sql . "<br>" . $error->getMessage();
         }
     }
 
-	return $errorMsg == '' ? true : false;
+    return $errorMsg == '' ? true : false;
 }
 
-function validCustomer($customerID){
+function validCustomer($customerID)
+{
     global $dsn;
     global $username;
     global $password;
     global $options;
-	global $errorMsg;
+    global $errorMsg;
 
-    try{
+    try {
         $connection = new PDO($dsn, $username, $password, $options);
     
         $sql = "SELECT * FROM Customer WHERE customerID=:customerID";
@@ -64,22 +65,20 @@ function validCustomer($customerID){
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
 
-        if(!$result){
+        if (!$result) {
             $errorMsg .= "Customer ID $customerID does not exist </br>";
         }
-
-    } catch(PDOException $error){
+    } catch (PDOException $error) {
         echo $sql . "<br>" . $error->getMessage();
     }
 }
 
-function displayError($error){
-	global $errorMsg;
-	$errorMsg = '';
+function displayError($error)
+{
+    global $errorMsg;
+    $errorMsg = '';
 
-    if($error->getCode() == "23000"){
+    if ($error->getCode() == "23000") {
         $errorMsg .= "Invald Account Number</br>";
-    } 
+    }
 }
-
-?>

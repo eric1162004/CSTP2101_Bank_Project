@@ -6,69 +6,69 @@ require "./validateAccountInput.php";
 
 static $errorMsg;
 
-if (isset($_POST['submit'])){
-	
-	if (!hash_equals($_SESSION['csrf'], $_POST['csrf'])) die();
+if (isset($_POST['submit'])) {
+    if (!hash_equals($_SESSION['csrf'], $_POST['csrf'])) {
+        die();
+    }
 
-	if(isValidInput($_POST)){
-		try{
-			$connection = new PDO($dsn, $username, $password, $options);
-	
-			$new_account = array(
-				"type" => $_POST['type'],
-				//"balance" => $_POST['balance'],
-				"branchNumber" => $_POST['branchNumber']
-			);
-			
-			// if ($_POST['balance'] == ''){
-			// 	unset($new_account['balance']);
-			// }
-	
-			if ($_POST['branchNumber'] == ''){
-				unset($new_account['branchNumber']);
-			}
-		
-			$sql = sprintf(
-				"INSERT INTO %s (%s) values (%s)",
-				"Account",
-				implode(", ", array_keys($new_account)),
-				":" . implode(", :", array_keys($new_account))
-			);
-			$statement = $connection->prepare($sql);
-			$statement->execute($new_account);
+    if (isValidInput($_POST)) {
+        try {
+            $connection = new PDO($dsn, $username, $password, $options);
+    
+            $new_account = array(
+                "type" => $_POST['type'],
+                //"balance" => $_POST['balance'],
+                "branchNumber" => $_POST['branchNumber']
+            );
+            
+            // if ($_POST['balance'] == ''){
+            // 	unset($new_account['balance']);
+            // }
+    
+            if ($_POST['branchNumber'] == '') {
+                unset($new_account['branchNumber']);
+            }
+        
+            $sql = sprintf(
+                "INSERT INTO %s (%s) values (%s)",
+                "Account",
+                implode(", ", array_keys($new_account)),
+                ":" . implode(", :", array_keys($new_account))
+            );
+            $statement = $connection->prepare($sql);
+            $statement->execute($new_account);
             $new_accNumber = $connection->lastInsertId();
             
             // insert a record into the Owns table
-			if(isset($_POST['customerID1'])){
-				$sql2 = sprintf(
-					"INSERT INTO Owns values (%s,%s)",
-					$_POST['customerID1'],
-					$new_accNumber 
-				);
-				$statement = $connection->prepare($sql2);
-				$statement->execute($new_account);
-			}
+            if (isset($_POST['customerID1'])) {
+                $sql2 = sprintf(
+                    "INSERT INTO Owns values (%s,%s)",
+                    $_POST['customerID1'],
+                    $new_accNumber
+                );
+                $statement = $connection->prepare($sql2);
+                $statement->execute($new_account);
+            }
 
-			if(isset($_POST['customerID2'])){
-				$sql2 = sprintf(
-					"INSERT INTO Owns values (%s,%s)",
-					$_POST['customerID2'],
-					$new_accNumber 
-				);
-				$statement = $connection->prepare($sql2);
-				$statement->execute($new_account);
-			}
-	
-		} catch(PDOException $error){
-			echo $sql . "<br>" . $error->getMessage();
+            if (isset($_POST['customerID2'])) {
+                $sql2 = sprintf(
+                    "INSERT INTO Owns values (%s,%s)",
+                    $_POST['customerID2'],
+                    $new_accNumber
+                );
+                $statement = $connection->prepare($sql2);
+                $statement->execute($new_account);
+            }
+        } catch (PDOException $error) {
+            echo $sql . "<br>" . $error->getMessage();
             displayError($error);
-		}
-	}
+        }
+    }
 }
 ?>
 
-<?php 
-    include "../templates/header.php"; 
+<?php
+    include "../templates/header.php";
     renderHeader("../css/style.css");
 ?>
 

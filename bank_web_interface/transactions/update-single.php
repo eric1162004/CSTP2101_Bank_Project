@@ -7,69 +7,70 @@ require "./validateTransactionInput.php";
 static $errorMsg;
  
 if (isset($_POST['submit'])) {
-  if (!hash_equals($_SESSION['csrf'], $_POST['csrf'])) die();
+    if (!hash_equals($_SESSION['csrf'], $_POST['csrf'])) {
+        die();
+    }
 
-  if(isValidInput($_POST)){
-    try {
-      $connection = new PDO($dsn, $username, $password, $options);
+    if (isValidInput($_POST)) {
+        try {
+            $connection = new PDO($dsn, $username, $password, $options);
 
-      $transaction = 
+            $transaction =
       [
       "transNumber"    =>  $_POST['transNumber'],
       "accNumber"     =>  $_POST['accNumber'],
       "amount"        =>  $_POST['amount'] == 0 ? 0 : $_POST['amount']
       ];
 
-      $sql = 
+            $sql =
       "UPDATE Transactions
       SET 
       accNumber = :accNumber,
       amount = :amount
       WHERE transNumber = :transNumber";
 
-      $statement = $connection->prepare($sql);
-      $statement->execute($transaction);
-
-    } catch(PDOException $error) {
-      echo $sql . "<br>" . $error->getMessage();
-      isManagerSINValid($error);
+            $statement = $connection->prepare($sql);
+            $statement->execute($transaction);
+        } catch (PDOException $error) {
+            echo $sql . "<br>" . $error->getMessage();
+            isManagerSINValid($error);
+        }
     }
-  }
 }
 
 if (isset($_GET['id'])) {
-  try {
-    $connection = new PDO($dsn, $username, $password, $options);
-    $id = $_GET['id'];
+    try {
+        $connection = new PDO($dsn, $username, $password, $options);
+        $id = $_GET['id'];
 
-    $sql = "SELECT * FROM Transactions WHERE transNumber = :id";
-    $statement = $connection->prepare($sql);
-    $statement->bindValue(':id', $id);
-    $statement->execute();
+        $sql = "SELECT * FROM Transactions WHERE transNumber = :id";
+        $statement = $connection->prepare($sql);
+        $statement->bindValue(':id', $id);
+        $statement->execute();
 
-    $transaction = $statement->fetch(PDO::FETCH_ASSOC);
-
-  } catch(PDOException $error) {
-      echo $sql . "<br>" . $error->getMessage();
-      isManagerSINValid($error);
-  }
+        $transaction = $statement->fetch(PDO::FETCH_ASSOC);
+    } catch (PDOException $error) {
+        echo $sql . "<br>" . $error->getMessage();
+        isManagerSINValid($error);
+    }
 } else {
     echo "Something went wrong!";
     exit;
 }
 
-function renderInputType($key){
-    if ($key == 'amount'){
-      echo "number";
-  } else {
-      echo 'text';
-  }
+function renderInputType($key)
+{
+    if ($key == 'amount') {
+        echo "number";
+    } else {
+        echo 'text';
+    }
 }
 
 ?>
 
-<?php 
-    include "../templates/header.php"; 
+<?php
+    include "../templates/header.php";
     renderHeader("../css/style.css");
 ?>
 
@@ -92,11 +93,13 @@ function renderInputType($key){
 
     <input
     type="<?php renderInputType($key) ?>"
-    step="<?php if($key == 'amount') echo '0.01' ?>"
+    step="<?php if ($key == 'amount') {
+    echo '0.01';
+} ?>"
     name="<?php echo $key; ?>"
     id="<?php echo $key; ?>"
     value="<?php echo escape($value); ?>">
-    <?php echo ($key === 'transNumber' ? '(read-only)' : null); ?>
+    <?php echo($key === 'transNumber' ? '(read-only)' : null); ?>
 
   <?php endforeach; ?>
 

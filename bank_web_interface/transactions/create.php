@@ -6,44 +6,44 @@ require "./validateTransactionInput.php";
 
 static $errorMsg;
 
-if (isset($_POST['submit'])){
-	
-	if (!hash_equals($_SESSION['csrf'], $_POST['csrf'])) die();
+if (isset($_POST['submit'])) {
+    if (!hash_equals($_SESSION['csrf'], $_POST['csrf'])) {
+        die();
+    }
 
-	if(isValidInput($_POST)){
-		try{
-			$connection = new PDO($dsn, $username, $password, $options);
-	
-			$new_transaction = array(
-				"accNumber" => $_POST['accNumber'],
-				"amount" => $_POST['amount']
-			);
-	
-			if ($_POST['amount'] == ''){
-				unset($new_transaction['amount']);
-			}
-		
-			$sql = sprintf(
-				"INSERT INTO %s (%s) values (%s)",
-				"Transactions",
-				implode(", ", array_keys($new_transaction)),
-				":" . implode(", :", array_keys($new_transaction))
-			);
-	
-			$statement = $connection->prepare($sql);
-			$statement->execute($new_transaction);
-			$new_transNumber = $connection->lastInsertId();
-	
-		} catch(PDOException $error){
-			echo $sql . "<br>" . $error->getMessage();
+    if (isValidInput($_POST)) {
+        try {
+            $connection = new PDO($dsn, $username, $password, $options);
+    
+            $new_transaction = array(
+                "accNumber" => $_POST['accNumber'],
+                "amount" => $_POST['amount']
+            );
+    
+            if ($_POST['amount'] == '') {
+                unset($new_transaction['amount']);
+            }
+        
+            $sql = sprintf(
+                "INSERT INTO %s (%s) values (%s)",
+                "Transactions",
+                implode(", ", array_keys($new_transaction)),
+                ":" . implode(", :", array_keys($new_transaction))
+            );
+    
+            $statement = $connection->prepare($sql);
+            $statement->execute($new_transaction);
+            $new_transNumber = $connection->lastInsertId();
+        } catch (PDOException $error) {
+            echo $sql . "<br>" . $error->getMessage();
             isaccNumberValid($error);
-		}
-	}
+        }
+    }
 }
 ?>
 
-<?php 
-    include "../templates/header.php"; 
+<?php
+    include "../templates/header.php";
     renderHeader("../css/style.css");
 ?>
 

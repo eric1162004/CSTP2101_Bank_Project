@@ -4,46 +4,47 @@ require "../../config.php";
 require "../../common.php";
 
 if (isset($_GET["id"])) {
-  try {
-    $connection = new PDO($dsn, $username, $password, $options);
+    try {
+        $connection = new PDO($dsn, $username, $password, $options);
 
-    $id = $_GET["id"];
+        $id = $_GET["id"];
 
-    $sql = "DELETE FROM Transactions WHERE transNumber = :id";
+        $sql = "DELETE FROM Transactions WHERE transNumber = :id";
 
-    $statement = $connection->prepare($sql);
-    $statement->bindValue(':id', $id);
-    $statement->execute();
+        $statement = $connection->prepare($sql);
+        $statement->bindValue(':id', $id);
+        $statement->execute();
 
-    $success = "Transaction #(id: $id) successfully deleted";
-
-  } catch(PDOException $error) {
-    echo $sql . "<br>" . $error->getMessage();
-  }
+        $success = "Transaction #(id: $id) successfully deleted";
+    } catch (PDOException $error) {
+        echo $sql . "<br>" . $error->getMessage();
+    }
 }
 
 try {
-  $connection = new PDO($dsn, $username, $password, $options);
+    $connection = new PDO($dsn, $username, $password, $options);
 
-  $sql = "SELECT * FROM Transactions";
+    $sql = "SELECT * FROM Transactions";
 
-  $statement = $connection->prepare($sql);
-  $statement->execute();
+    $statement = $connection->prepare($sql);
+    $statement->execute();
 
-  $result = $statement->fetchAll();
-} catch(PDOException $error) {
-  echo $sql . "<br>" . $error->getMessage();
+    $result = $statement->fetchAll();
+} catch (PDOException $error) {
+    echo $sql . "<br>" . $error->getMessage();
 }
 ?>
 
-<?php 
-    include "../templates/header.php"; 
+<?php
+    include "../templates/header.php";
     renderHeader("../css/style.css");
 ?>
 
 <h3>Delete Transaction</h3>
 
-<?php if (isset($success)) echo $success; ?>
+<?php if (isset($success)) {
+    echo $success;
+} ?>
 
 <table>
   <thead>

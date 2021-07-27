@@ -6,49 +6,48 @@ require "./validateCustomerInput.php";
 
 static $errorMsg;
 
-if (isset($_POST['submit'])){
-	
-	if (!hash_equals($_SESSION['csrf'], $_POST['csrf'])) die();
+if (isset($_POST['submit'])) {
+    if (!hash_equals($_SESSION['csrf'], $_POST['csrf'])) {
+        die();
+    }
 
-	if(isValidInput($_POST)){
-		try{
-			$connection = new PDO($dsn, $username, $password, $options);
-	
-			$new_customer = array(
-				"firstName" => $_POST['firstName'],
-				"lastName" => $_POST['lastName'],
-				"income" => $_POST['income'],
-				"birthDate" => $_POST['birthDate']
-			);
-			
-			if ($_POST['income'] == ''){
-				unset($new_customer['income']);
-			}
-	
-			if ($_POST['birthDate'] == ''){
-				unset($new_customer['birthDate']);
-			}
-		
-			$sql = sprintf(
-				"INSERT INTO %s (%s) values (%s)",
-				"Customer",
-				implode(", ", array_keys($new_customer)),
-				":" . implode(", :", array_keys($new_customer))
-			);
-	
-			$statement = $connection->prepare($sql);
-			$statement->execute($new_customer);
-	
-		} catch(PDOException $error){
-			echo $sql . "<br>" . $error->getMessage();
-			
-		}
-	}
+    if (isValidInput($_POST)) {
+        try {
+            $connection = new PDO($dsn, $username, $password, $options);
+    
+            $new_customer = array(
+                "firstName" => $_POST['firstName'],
+                "lastName" => $_POST['lastName'],
+                "income" => $_POST['income'],
+                "birthDate" => $_POST['birthDate']
+            );
+            
+            if ($_POST['income'] == '') {
+                unset($new_customer['income']);
+            }
+    
+            if ($_POST['birthDate'] == '') {
+                unset($new_customer['birthDate']);
+            }
+        
+            $sql = sprintf(
+                "INSERT INTO %s (%s) values (%s)",
+                "Customer",
+                implode(", ", array_keys($new_customer)),
+                ":" . implode(", :", array_keys($new_customer))
+            );
+    
+            $statement = $connection->prepare($sql);
+            $statement->execute($new_customer);
+        } catch (PDOException $error) {
+            echo $sql . "<br>" . $error->getMessage();
+        }
+    }
 }
 ?>
 
-<?php 
-    include "../templates/header.php"; 
+<?php
+    include "../templates/header.php";
     renderHeader("../css/style.css");
 ?>
 

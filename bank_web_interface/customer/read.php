@@ -7,7 +7,7 @@ if (isset($_POST['submit'])) {
 
         $customerID = $_POST['customerID'];
 
-        $connection = new PDO($dsn, $username, $password, $options);        
+        $connection = new PDO($dsn, $username, $password, $options);
 
         $sql = "SELECT * FROM Customer WHERE customerID = :customerID";
 
@@ -16,21 +16,20 @@ if (isset($_POST['submit'])) {
         $statement->execute();
 
         $result = $statement->fetchAll();
-
-    } catch(PDOException $error) {
-      echo $sql . "<br>" . $error->getMessage();
+    } catch (PDOException $error) {
+        echo $sql . "<br>" . $error->getMessage();
     }
-  }
+}
 ?>
 
-<?php 
-    include "../templates/header.php"; 
+<?php
+    include "../templates/header.php";
     renderHeader("../css/style.css");
 ?>
 
 <?php
 if (isset($_POST['submit'])) {
-  if ($result && $statement->rowCount() > 0) { ?>
+    if ($result && $statement->rowCount() > 0) { ?>
       <h3>Results</h3>
       <table>
       <thead>

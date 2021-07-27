@@ -7,13 +7,15 @@ require "./validateBranchInput.php";
 static $errorMsg;
  
 if (isset($_POST['submit'])) {
-  if (!hash_equals($_SESSION['csrf'], $_POST['csrf'])) die();
+    if (!hash_equals($_SESSION['csrf'], $_POST['csrf'])) {
+        die();
+    }
 
-  if(isValidInput($_POST)){
-    try {
-      $connection = new PDO($dsn, $username, $password, $options);
+    if (isValidInput($_POST)) {
+        try {
+            $connection = new PDO($dsn, $username, $password, $options);
 
-      $branch = $_POST['managerSIN'] == '' ?       
+            $branch = $_POST['managerSIN'] == '' ?
       [
         "branchNumber"    =>  $_POST['branchNumber'],
         "branchName"     =>  $_POST['branchName'],
@@ -26,7 +28,7 @@ if (isset($_POST['submit'])) {
         "budget"        =>  $_POST['budget'] == 0 ? 0 : $_POST['budget']
       ];
 
-    $sql = $_POST['managerSIN'] == '' ?
+            $sql = $_POST['managerSIN'] == '' ?
     "UPDATE Branch
     SET 
     branchName = :branchName,
@@ -39,49 +41,48 @@ if (isset($_POST['submit'])) {
     budget = :budget
     WHERE branchNumber = :branchNumber";
 
-    $statement = $connection->prepare($sql);
-    $statement->execute($branch);
-
-    } catch(PDOException $error) {
-      echo $sql . "<br>" . $error->getMessage();
-      isManagerSINValid($error);
+            $statement = $connection->prepare($sql);
+            $statement->execute($branch);
+        } catch (PDOException $error) {
+            echo $sql . "<br>" . $error->getMessage();
+            isManagerSINValid($error);
+        }
     }
-  }
 }
 
 if (isset($_GET['id'])) {
-  try {
-    $connection = new PDO($dsn, $username, $password, $options);
-    $id = $_GET['id'];
+    try {
+        $connection = new PDO($dsn, $username, $password, $options);
+        $id = $_GET['id'];
 
-    $sql = "SELECT * FROM Branch WHERE branchNumber = :id";
-    $statement = $connection->prepare($sql);
-    $statement->bindValue(':id', $id);
-    $statement->execute();
+        $sql = "SELECT * FROM Branch WHERE branchNumber = :id";
+        $statement = $connection->prepare($sql);
+        $statement->bindValue(':id', $id);
+        $statement->execute();
 
-    $branch = $statement->fetch(PDO::FETCH_ASSOC);
-
-  } catch(PDOException $error) {
-      echo $sql . "<br>" . $error->getMessage();
-      isManagerSINValid($error);
-  }
+        $branch = $statement->fetch(PDO::FETCH_ASSOC);
+    } catch (PDOException $error) {
+        echo $sql . "<br>" . $error->getMessage();
+        isManagerSINValid($error);
+    }
 } else {
     echo "Something went wrong!";
     exit;
 }
 
-function renderInputType($key){
-    if ($key == 'budget'){
-      echo "number";
-  } else {
-      echo 'text';
-  }
+function renderInputType($key)
+{
+    if ($key == 'budget') {
+        echo "number";
+    } else {
+        echo 'text';
+    }
 }
 
 ?>
 
-<?php 
-    include "../templates/header.php"; 
+<?php
+    include "../templates/header.php";
     renderHeader("../css/style.css");
 ?>
 
@@ -104,11 +105,13 @@ function renderInputType($key){
 
     <input
     type="<?php renderInputType($key) ?>"
-    step="<?php if($key == 'budget') echo '0.01' ?>"
+    step="<?php if ($key == 'budget') {
+    echo '0.01';
+} ?>"
     name="<?php echo $key; ?>"
     id="<?php echo $key; ?>"
     value="<?php echo escape($value); ?>">
-    <?php echo ($key === 'branchNumber' ? '(read-only)' : null); ?>
+    <?php echo($key === 'branchNumber' ? '(read-only)' : null); ?>
 
   <?php endforeach; ?>
 

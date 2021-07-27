@@ -7,7 +7,7 @@ if (isset($_POST['submit'])) {
 
         $accNumber = $_POST['accNumber'];
 
-        $connection = new PDO($dsn, $username, $password, $options);        
+        $connection = new PDO($dsn, $username, $password, $options);
 
         $sql = "SELECT * FROM Account WHERE accNumber = :accNumber";
         $statement = $connection->prepare($sql);
@@ -33,24 +33,23 @@ if (isset($_POST['submit'])) {
 
         // Get Customer Information
         $customers = array();
-        foreach ($ownResults as $row){
-          $sql2 = "SELECT * FROM Customer WHERE customerID = :customerID";
-          $statement = $connection->prepare($sql2);
-          $statement->bindParam(":customerID", $row["customerID"], PDO::PARAM_STR);
-          $statement->execute();
+        foreach ($ownResults as $row) {
+            $sql2 = "SELECT * FROM Customer WHERE customerID = :customerID";
+            $statement = $connection->prepare($sql2);
+            $statement->bindParam(":customerID", $row["customerID"], PDO::PARAM_STR);
+            $statement->execute();
 
-          $customerResults = $statement->fetchAll();
-          array_push($customers, $customerResults[0]);
+            $customerResults = $statement->fetchAll();
+            array_push($customers, $customerResults[0]);
         }
-
-    } catch(PDOException $error) {
-      echo $sql . "<br>" . $error->getMessage();
+    } catch (PDOException $error) {
+        echo $sql . "<br>" . $error->getMessage();
     }
-  }
+}
 ?>
 
-<?php 
-    include "../templates/header.php"; 
+<?php
+    include "../templates/header.php";
     renderHeader("../css/style.css");
 ?>
 
@@ -65,7 +64,7 @@ if (isset($_POST['submit'])) {
 
 <?php
 if (isset($_POST['submit'])) {
-  if ($result && $statement->rowCount() > 0) { ?>
+    if ($result && $statement->rowCount() > 0) { ?>
 
     <h3>Account Details</h3>
     <table>

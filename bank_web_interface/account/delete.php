@@ -15,6 +15,12 @@ if (isset($_GET["id"])) {
         $statement->bindParam(":accNumber", $id, PDO::PARAM_STR);
         $statement->execute();
 
+        // Delete all entries in Transactions related to the accNumber
+        $sql = "DELETE FROM Transactions WHERE accNumber = :accNumber";
+        $statement = $connection->prepare($sql);
+        $statement->bindParam(":accNumber", $id, PDO::PARAM_STR);
+        $statement->execute();
+
         $sql = "DELETE FROM Account WHERE accNumber = :id";
         $statement = $connection->prepare($sql);
         $statement->bindValue(':id', $id);

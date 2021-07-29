@@ -2,6 +2,9 @@
 
 require "../../config.php";
 require "../../common.php";
+require "./validateBranchInput.php";
+
+static $errorMsg;
 
 if (isset($_GET["id"])) {
     try {
@@ -17,7 +20,8 @@ if (isset($_GET["id"])) {
 
         $success = "Branch (id: $id) successfully deleted";
     } catch (PDOException $error) {
-        echo $sql . "<br>" . $error->getMessage();
+      //echo $sql . "<br>" . $error->getMessage();
+      validateForeignContraint($error);
     }
 }
 
@@ -46,10 +50,13 @@ try {
     echo $success;
 } ?>
 
+<?php if ($errorMsg != '') { ?>
+	<?php echo "<div class='errorDiv'>" . $errorMsg . "</div>"?>
+<?php } ?>
+
 <table>
   <thead>
     <tr>
-      <th>#</th>
       <th>Branch Number</th>
       <th>Branch Name</th>
       <th>Manager SIN</th>

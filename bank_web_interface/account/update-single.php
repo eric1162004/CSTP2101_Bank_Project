@@ -19,26 +19,26 @@ if (isset($_POST['submit'])) {
       [
       "accNumber"    =>  $_POST['accNumber'],
       "type"     =>  $_POST['type'],
-      // "balance"        =>  $_POST['balance'] == 0 ? 0 : $_POST['balance']
+      "balance"        =>  $_POST['balance'] == 0 ? 0 : $_POST['balance']
       ]:
       [
       "accNumber"    =>  $_POST['accNumber'],
       "type"     =>  $_POST['type'],
       "branchNumber"      =>  $_POST['branchNumber']
-      // ,"balance"        =>  $_POST['balance'] == 0 ? 0 : $_POST['balance']
+      ,"balance"        =>  $_POST['balance'] == 0 ? 0 : $_POST['balance']
       ];
 
             $sql = $_POST['branchNumber'] == '' ?
       "UPDATE Account
       SET 
       type = :type
-      -- ,balance = :balance
+      ,balance = :balance
       WHERE accNumber = :accNumber":
       "UPDATE Account
       SET 
       type = :type,
       branchNumber = :branchNumber
-      -- ,balance = :balance
+      ,balance = :balance
       WHERE accNumber = :accNumber";
 
             $statement = $connection->prepare($sql);
@@ -142,10 +142,6 @@ function renderInputType($key)
 <form method="post">
   <?php foreach ($account as $key => $value) : ?>
 
-    <!-- Skip the balance field -->
-    <?php if ($key == "balance"): continue;?>
-    <?php endif; ?>
-
     <?php if ($key != "type"): ?>
 
     <label for="<?php echo $key; ?>">
@@ -166,9 +162,9 @@ function renderInputType($key)
 
     <label for="type">Account Type</label>
     <select name="type" id="type">
-        <option value="chequing">chequing</option>
-        <option value="saving">saving</option>
-        <option value="business">business</option>
+        <option value="chequing" <?php if($value == "chequing") echo "selected"; ?>>chequing</option>
+        <option value="saving" <?php if($value == "saving") echo "selected"; ?>>saving</option>
+        <option value="business" <?php if($value == "business") echo "selected"; ?>>business</option>
     </select>
 
     <?php endif; ?>

@@ -17,13 +17,13 @@ if (isset($_POST['submit'])) {
     
             $new_account = array(
                 "type" => $_POST['type'],
-                //"balance" => $_POST['balance'],
+                "balance" => $_POST['balance'],
                 "branchNumber" => $_POST['branchNumber']
             );
             
-            // if ($_POST['balance'] == ''){
-            // 	unset($new_account['balance']);
-            // }
+            if ($_POST['balance'] == ''){
+            	unset($new_account['balance']);
+            }
     
             if ($_POST['branchNumber'] == '') {
                 unset($new_account['branchNumber']);
@@ -40,7 +40,7 @@ if (isset($_POST['submit'])) {
             $new_accNumber = $connection->lastInsertId();
             
             // insert a record into the Owns table
-            if (isset($_POST['customerID1'])) {
+            if ($_POST['customerID1'] != "") {
                 $sql2 = sprintf(
                     "INSERT INTO Owns values (%s,%s)",
                     $_POST['customerID1'],
@@ -50,7 +50,7 @@ if (isset($_POST['submit'])) {
                 $statement->execute($new_account);
             }
 
-            if (isset($_POST['customerID2'])) {
+            if ($_POST['customerID2'] != "") {
                 $sql2 = sprintf(
                     "INSERT INTO Owns values (%s,%s)",
                     $_POST['customerID2'],
@@ -71,7 +71,7 @@ if (isset($_POST['submit'])) {
     include "../templates/header.php";
     renderHeader("../css/style.css");
 ?>
-
+ 
 <?php if (isset($_POST['submit']) && $errorMsg == '' && isset($statement)) { ?>
   <?php echo escape($_POST['type']); ?> successfully added.
 <?php } ?>
@@ -89,8 +89,8 @@ if (isset($_POST['submit'])) {
             <option value="saving">saving</option>
             <option value="business">business</option>
         </select>
-    	<!-- <label for="balance">Balance</label>
-    	<input type="number" step="0.01" name="balance" id="balance"> -->
+    	<label for="balance">Balance</label>
+    	<input type="number" step="0.01" name="balance" id="balance">
         <label for="branchNumber">Branch Number</label>
     	<input type="number" name="branchNumber" id="branchNumber">
 		<label for="customerID1">Account Owner 1 (Enter Customer ID):</label>

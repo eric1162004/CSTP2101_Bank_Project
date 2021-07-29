@@ -46,7 +46,7 @@ if (isset($_POST['submit'])) {
     include "../templates/header.php";
     renderHeader("../css/style.css");
 ?>
-
+ 
 <?php if (isset($_POST['submit']) && $errorMsg == '' && isset($statement)) { ?>
   Transaction #<?php echo $new_transNumber; ?> successfully added.
 <?php } ?>
@@ -60,7 +60,7 @@ if (isset($_POST['submit'])) {
 <form method="post">
     	<label for="accNumber">Account Number:</label>
     	<input type="number"  name="accNumber" id="accNumber">
-    	<label for="amount">Amount amount($CAD)</label>
+    	<label for="amount">Transaction amount($CAD)</label>
     	<input type="number" step="0.01" name="amount" id="amount">
     	<input type="submit" name="submit" value="Submit">
 		<input name="csrf" type="hidden" value="<?php echo escape($_SESSION['csrf']); ?>">

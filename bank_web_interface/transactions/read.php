@@ -52,7 +52,9 @@ if (isset($_POST['submit'])) {
     </table>
 
   <?php } else { ?>
-    > No results found for <?php echo escape($_POST['transNumber']); ?>.
+    <div class="errorDiv">
+        No results found for <?php echo escape($_POST['transNumber']); ?>.
+    </div>
   <?php }
 } ?>
 

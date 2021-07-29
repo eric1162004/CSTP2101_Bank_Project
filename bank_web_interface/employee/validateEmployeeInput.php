@@ -33,7 +33,9 @@ function displayError($error)
     global $errorMsg;
     $errorMsg = '';
 
-    if (preg_match('/Integrity constraint violation: 1452/', $error)) {
-        $errorMsg .= "Invalid Branch Number </br>";
+    if (strpos($error->getMessage(), "foreign key constraint fails") !== false) {
+        $errorMsg .= "Cannot delete employyee who is a branch manager </br>";
     }
 }
+
+

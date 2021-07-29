@@ -9,8 +9,13 @@ if (isset($_GET["id"])) {
 
         $id = $_GET["id"];
 
-        $sql = "DELETE FROM Account WHERE accNumber = :id";
+        // Delete all entries in Owns related to the accNumber
+        $sql = "DELETE FROM Owns WHERE accNumber = :accNumber";
+        $statement = $connection->prepare($sql);
+        $statement->bindParam(":accNumber", $id, PDO::PARAM_STR);
+        $statement->execute();
 
+        $sql = "DELETE FROM Account WHERE accNumber = :id";
         $statement = $connection->prepare($sql);
         $statement->bindValue(':id', $id);
         $statement->execute();

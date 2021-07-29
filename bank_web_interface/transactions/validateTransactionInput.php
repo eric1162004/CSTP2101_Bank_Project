@@ -9,6 +9,10 @@ function isValidInput($inputs)
     global $errorMsg;
     $errorMsg = '';
 
+    if($inputs['amount'] == ""){
+        $errorMsg .= "Please enter amount </br> ";
+    }
+
     if ($inputs['accNumber'] == "") {
         $errorMsg .= "An Account Number is required </br> ";
     } else {

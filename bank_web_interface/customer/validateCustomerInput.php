@@ -15,3 +15,14 @@ function isValidInput($inputs)
 
     return $errorMsg == '' ? true : false;
 }
+
+function displayError($error)
+{
+    global $errorMsg;
+    $errorMsg = '';
+
+    if (strpos($error->getMessage(), "foreign key constraint fails") !== false) {
+        $errorMsg .= "Cannot delete a customer who has existing account(s)</br>";
+    }
+}
+

@@ -24,7 +24,7 @@ function isValidInput($inputs)
     if ($inputs['customerID1'] == $inputs['customerID2']) {
         $errorMsg .= "Duplicated account owner IDs </br> ";
     }
-
+ 
     if ($inputs['branchNumber'] != "") {
         try {
             $connection = new PDO($dsn, $username, $password, $options);

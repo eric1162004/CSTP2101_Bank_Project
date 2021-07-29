@@ -15,12 +15,7 @@ if (isset($_POST['submit'])) {
         try {
             $connection = new PDO($dsn, $username, $password, $options);
 
-            $branch = $_POST['managerSIN'] == '' ?
-      [
-        "branchNumber"    =>  $_POST['branchNumber'],
-        "branchName"     =>  $_POST['branchName'],
-        "budget"        =>  $_POST['budget'] == 0 ? 0 : $_POST['budget']
-      ]:
+            $branch =
       [
         "branchNumber"    =>  $_POST['branchNumber'],
         "branchName"     =>  $_POST['branchName'],
@@ -28,12 +23,7 @@ if (isset($_POST['submit'])) {
         "budget"        =>  $_POST['budget'] == 0 ? 0 : $_POST['budget']
       ];
 
-            $sql = $_POST['managerSIN'] == '' ?
-    "UPDATE Branch
-    SET 
-    branchName = :branchName,
-    budget = :budget
-    WHERE branchNumber = :branchNumber":
+            $sql =
     "UPDATE Branch
     SET 
     branchName = :branchName,
@@ -44,7 +34,7 @@ if (isset($_POST['submit'])) {
             $statement = $connection->prepare($sql);
             $statement->execute($branch);
         } catch (PDOException $error) {
-            echo $sql . "<br>" . $error->getMessage();
+            // echo $sql . "<br>" . $error->getMessage();
             isManagerSINValid($error);
         }
     }

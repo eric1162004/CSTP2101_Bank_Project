@@ -2,6 +2,9 @@
 
 require "../../config.php";
 require "../../common.php";
+require "./validateCustomerInput.php";
+
+static $errorMsg;
 
 if (isset($_GET["id"])) {
     try {
@@ -17,7 +20,8 @@ if (isset($_GET["id"])) {
 
         $success = "Customer (id: $id) successfully deleted";
     } catch (PDOException $error) {
-        echo $sql . "<br>" . $error->getMessage();
+        // echo $sql . "<br>" . $error->getMessage();
+        displayError($error);
     }
 }
 
@@ -39,6 +43,10 @@ try {
     include "../templates/header.php";
     renderHeader("../css/style.css");
 ?>
+
+<?php if ($errorMsg != '') { ?>
+	<?php echo "<div class='errorDiv'>" . $errorMsg . "</div>"?>
+<?php } ?>
 
 <h3>Delete Customer</h3>
 

@@ -47,7 +47,7 @@ if (isset($_POST['submit'])) {
     }
 }
 ?>
-
+ 
 <?php
     include "../templates/header.php";
     renderHeader("../css/style.css");
@@ -73,6 +73,7 @@ if (isset($_POST['submit'])) {
     <th>Account Number</th>
     <th>Account Type</th>
     <th>Balance($CAD)</th>
+    <th>Sum of Transaction($CAD)</th>
     <th>Branch Number</th>
     </tr>
     </thead>
@@ -81,6 +82,7 @@ if (isset($_POST['submit'])) {
     <tr>
     <td><?php echo escape($row["accNumber"]); ?></td>
     <td><?php echo escape($row["type"]); ?></td>
+    <td><?php echo escape($row["balance"]); ?></td>
     <td><?php echo escape($accountBalance); ?></td>
     <td><?php echo escape($row["branchNumber"]); ?></td>
     </tr>
@@ -113,8 +115,10 @@ if (isset($_POST['submit'])) {
     </table>
 
   <?php } else { ?>
-    <h3>Results</h3>
-    No results for account number: <?php echo escape($_POST['accNumber']); ?>.
+    <br>
+    <div class='errorDiv'>
+        No results for account number: <?php echo escape($_POST['accNumber']); ?>.
+    </div>
   <?php }
 } ?>
 

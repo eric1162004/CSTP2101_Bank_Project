@@ -2,6 +2,9 @@
 
 require "../../config.php";
 require "../../common.php";
+require "./validateEmployeeInput.php";
+
+static $errorMsg;
 
 if (isset($_GET["id"])) {
     try {
@@ -9,7 +12,7 @@ if (isset($_GET["id"])) {
 
         $id = $_GET["id"];
 
-        $sql = "DELETE FROM Employee WHERE sin = :sin";
+        $sql = "DELETE FROM Employee WHERE sin = :sin"; 
 
         $statement = $connection->prepare($sql);
         $statement->bindValue(':sin', $id);
@@ -17,7 +20,8 @@ if (isset($_GET["id"])) {
 
         $success = "Employee (id: $id) successfully deleted";
     } catch (PDOException $error) {
-        echo $sql . "<br>" . $error->getMessage();
+        // echo $sql . "<br>" . $error->getMessage();
+        displayError($error);
     }
 }
 
@@ -45,6 +49,10 @@ try {
 <?php if (isset($success)) {
     echo $success;
 } ?>
+
+<?php if ($errorMsg != '') { ?>
+	<?php echo "<div class='errorDiv'>" . $errorMsg . "</div>"?>
+<?php } ?>
 
 <table>
   <thead>

@@ -40,8 +40,8 @@ if (isset($_POST['submit'])) {
             $new_accNumber = $connection->lastInsertId();
             
             // insert a record into the Owns table
-            while(!$new_accNumber){}
-            
+            echo "fdfdfd".$new_accNumber;
+
             if ($_POST['customerID1'] != "") {
                 $sql2 = sprintf(
                     "INSERT INTO Owns values (%s,%s)",

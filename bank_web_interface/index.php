@@ -3,7 +3,7 @@ include "templates/header.php";
 renderHeader("css/style.css");
 ?>
 
-<h3>Manage Customers:</h3>
+<h3>Manage Customers: </h3>
 
 <ul>
   <li>

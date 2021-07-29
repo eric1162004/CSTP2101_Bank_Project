@@ -20,7 +20,7 @@ renderHeader("css/style.css");
   </li>
 </ul>
 
-<h3>Manage Customer Accounts and Account Owners:</h3>
+<h3>Manage Customer Accounts & Account Owners:</h3>
 
 <ul>
   <li>

@@ -40,7 +40,6 @@ if (isset($_POST['submit'])) {
             $new_accNumber = $connection->lastInsertId();
             
             // insert a record into the Owns table
-            echo "fdfdfd".$new_accNumber;
 
             if ($_POST['customerID1'] != "") {
                 $sql2 = sprintf(
@@ -49,7 +48,7 @@ if (isset($_POST['submit'])) {
                     $new_accNumber
                 );
                 $statement = $connection->prepare($sql2);
-                $statement->execute($new_account);
+                $statement->execute();
             }
 
             if ($_POST['customerID2'] != "") {
@@ -59,7 +58,7 @@ if (isset($_POST['submit'])) {
                     $new_accNumber
                 );
                 $statement = $connection->prepare($sql2);
-                $statement->execute($new_account);
+                $statement->execute();
             }
         } catch (PDOException $error) {
             echo $sql . "<br>" . $error->getMessage();

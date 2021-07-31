@@ -1,8 +1,15 @@
-DROP DATABASE IF EXISTS heroku_f9e3d90d4a52b4f;
+/* This is the sql script the project team 
+    initally created for testing purpose */
 
+/* For Remote Database Use */
+/* DROP DATABASE IF EXISTS heroku_f9e3d90d4a52b4f;
 CREATE DATABASE heroku_f9e3d90d4a52b4f;
+USE heroku_f9e3d90d4a52b4f; */
 
-USE heroku_f9e3d90d4a52b4f;
+/* For Local Database Use */
+DROP database IF exists cstp_2101_bank;
+CREATE database cstp_2101_bank;
+USE cstp_2101_bank;
 
 CREATE TABLE Customer (
     customerID INT NOT NULL AUTO_INCREMENT,

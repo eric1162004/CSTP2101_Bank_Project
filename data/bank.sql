@@ -1,5 +1,7 @@
-drop database if exists cstp_2101_bank;
-create database cstp_2101_bank;
+/* Run sql script (with data) provided by Nabil */
+
+DROP database IF exists cstp_2101_bank;
+CREATE database cstp_2101_bank;
 USE cstp_2101_bank;
 
 CREATE TABLE Branch(

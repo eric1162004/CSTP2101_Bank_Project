@@ -7,7 +7,6 @@ Rayyan, Pokai, Jaisika, Eric
 - bank_web_interface: php codes for this project
 - data: scripts for database initializion
     - bank.sql (script with data)
-    - init.sql (for testing)
     - cstp_2101_bank_dump.sql (for submission requirement)
 - diagrams:  ER diagram
 - sql_queries: 20 SQL Queries and results
